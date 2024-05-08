@@ -264,7 +264,7 @@ Public
 		Local version : String = ""
 '#Else
 		'Local version:String = "#version 120~n"
-'#EndIf
+'#Endif
 
 		Local precision:String = "" +
 		"#ifdef GL_ES~n" +
@@ -301,6 +301,8 @@ Public
 			mDelegate = delegate
 			mUniforms = New ShaderUniforms(mHandle)
 			mAttribs = New ShaderAttribs(mHandle)
+		Else
+			Print ("ShaderError: "+mError)
 		End
 	End
 	
@@ -356,6 +358,7 @@ Public
 		If type = TypePixelLighting And _PixelLighting().Handle = 0 Then type -= 1
 		If type = TypeVertexLighting And _VertexLighting().Handle = 0 Then type -= -1
 		If type = TypeMinimalShadows And _MinimalShadows().Handle = 0 Then type -= -1
+		If type = TypeMinimal And _Minimal().Handle = 0 Then type -= -1
 		mDefaultType = type
 	End
 	

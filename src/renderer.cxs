@@ -605,23 +605,27 @@ Public
 		Local vshader:Int = glCreateShader(GL_VERTEX_SHADER)
 		glShaderSource(vshader, vertex)
 		glCompileShader(vshader)
-		mShaderError = glGetShaderInfoLog(vshader)
+		mShaderError = "VSHADER->~n" + glGetShaderInfoLog(vshader)
 		glGetShaderiv(vshader, GL_COMPILE_STATUS, retCode)
 		If retCode[0] = GL_FALSE
 			glDeleteShader(vshader)
 			Return 0
+		Else
+			mShaderError = ""
 		End
 
 		'Create fragment shader
 		Local fshader:Int = glCreateShader(GL_FRAGMENT_SHADER)
 		glShaderSource(fshader, fragment)
 		glCompileShader(fshader)
-		mShaderError += "~n" + glGetShaderInfoLog(fshader)
+		mShaderError += "FSHADER->~n" + glGetShaderInfoLog(fshader)
 		glGetShaderiv(fshader, GL_COMPILE_STATUS, retCode)
 		If retCode[0] = GL_FALSE
 			glDeleteShader(vshader)
 			glDeleteShader(fshader)
 			Return 0
+		Else
+			mShaderError = ""
 		End
 
 		'Create program
@@ -633,7 +637,7 @@ Public
 		glDeleteShader(fshader)
 		glGetProgramiv(program, GL_LINK_STATUS, retCode)
 		If retCode[0] = GL_FALSE
-			mShaderError = glGetProgramInfoLog(program)
+			mShaderError = "PROGRAM->~n"glGetProgramInfoLog(program)
 			FreeShader(program)
 			Return 0
 		End

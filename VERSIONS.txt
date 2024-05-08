@@ -1,3 +1,7 @@
+New Changes:
+- Mod Function CreateShader:Int(vertex:String, fragment:String) to output Shader errors. (Author: MikeHart)
+- Mod Method New Shader to print Shader errors. (Author: MikeHart)
+
 V2.0
 - All constants changed to PascalCase.
 - Red, Green, Blue, Alpha functions in Color class renamed to R, G, B, A.
