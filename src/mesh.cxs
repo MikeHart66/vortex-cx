@@ -669,6 +669,69 @@ Public
 		Return wedge
 	End
 	
+	Function CreatePyramid:Mesh()
+		Local surf:Surface = New Surface
+		
+		
+		'Bottom face
+		surf.AddVertex(-0.5, -0.5, -0.5,  0, -1, 0,  Color.White,  0, 0)  '#0
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.5, -0.5, -0.5,  0, -1, 0,  Color.White,  1, 0)  '#1
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex(-0.5, -0.5,  0.5,  0, -1, 0,  Color.White,  0, 1)  '#2
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.5, -0.5,  0.5,  0, -1, 0,  Color.White,  1, 1)  '#3
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddTriangle(0, 1, 2)
+		surf.AddTriangle(3, 2, 1)
+
+		' Back
+		surf.AddVertex(-0.5, -0.5, -0.5,  0, 0, -1,  Color.White,  0, 0)  '#4
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.5, -0.5, -0.5,  0, 0, -1,  Color.White,  1, 0)  '#5
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.0,  0.5,  0.0,  0, 0, -1,   Color.White,0.5,0.5)  '#6
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddTriangle(6, 5, 4 )
+
+		' Right
+		surf.AddVertex( 0.5, -0.5, -0.5,  1, 0, 0,  Color.White,  1, 0)  '#7
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.5, -0.5,  0.5,  1, 0, 0,  Color.White,  1, 1)  '#8
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.0,  0.5,  0.0,  1, 0, 0,   Color.White,0.5,0.5)  '#9
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddTriangle(9, 8, 7)
+
+		' Front
+		surf.AddVertex(-0.5, -0.5,  0.5,  0, 0, 1,  Color.White,  0, 1)  '#10
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.5, -0.5,  0.5,  0, 0, 1,  Color.White,  1, 1)  '#11
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.0,  0.5,  0.0,  0, 0, 1,   Color.White,0.5,0.5)  '#12
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddTriangle(10, 11, 12)
+
+		' Left
+		surf.AddVertex(-0.5, -0.5, -0.5,  -1, 0, 0,  Color.White,  0, 0)  '#13
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex(-0.5, -0.5,  0.5,  -1, 0, 0,  Color.White,  0, 1)  '#14
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddVertex( 0.0,  0.5,  0.0,  -1, 0, 0,   Color.White,0.5,0.5)  '#15
+		surf.VertexTangent(surf.NumVertices-1, 1, 0, 0)
+		surf.AddTriangle(13, 14, 15)
+
+
+
+
+		'Create mesh with surface
+		Local wedge:Mesh = New Mesh
+		wedge.AddSurface(surf)
+		wedge.Rebuild()
+		
+		Return wedge
+	End
+	
 	#Rem
 	Function _Load:Mesh(filename:String, skeletonFilename:String = "", animationFilename:String = "", texFilter:Int = Renderer.FilterTrilinear)
 		'Fix filenames
@@ -953,7 +1016,7 @@ Public
 			Local bits := line.Split( " " )
 			Select bits[0]
 				Case "mtllib"        'Material file
-					materialPath += "/"+bits[1]
+					materialPath += bits[1]
 'Print "mtllib = "+materialPath
 					'Load Material file	
 					
@@ -994,7 +1057,7 @@ Public
 							Case "d"        'dissolve
 							Case "illum"    'illumination model
 							Case "map_Kd"   'color texture file 
-								texturefile = "/"+matbits[1].Trim()
+								texturefile = matbits[1].Trim()
 'Print "mat texturefile = <"+texturefile+">"
 								mat.ColorTexture = Texture.Load(texturePath+texturefile, texFilter)
 						End
@@ -1017,7 +1080,7 @@ Public
 					' List of geometric vertices, with (x, y, z [,w]) coordinates, w is optional and defaults to 1.0.
 	  				' v 0.123 0.234 0.345 1.0			
 					If bits.Length() = 4 Or bits.Length() = 5
-						v.Push( Float( bits[1] ))
+						v.Push( Float( bits[1] )*-1)
 						v.Push( Float( bits[2] ))
 						v.Push( Float( bits[3] ))
 				'Print(Float( bits[1])+":"+Float( bits[2])+":"+Float( bits[3]))
@@ -1042,6 +1105,7 @@ Public
 					If bits.Length() = 3 Or bits.Length() = 4
 						vt.Push( Float( bits[1] ))
 						vt.Push( 1.0-Float( bits[2] ))
+						
 					Else
 						Error "OBJ error - Texture coordinates count ("+(bits.Length()-1)+")"
 					Endif

@@ -1,6 +1,11 @@
 New Changes:
 - Mod Function CreateShader:Int(vertex:String, fragment:String) to output Shader errors. (Author: MikeHart)
 - Mod Method New Shader to print Shader errors. (Author: MikeHart)
+- Fix LoadMesh OBJ files having the x coordinate of a vertex mirrored, resulting left/right being switched (Author: MikeHart)
+- Fix LoadMesh OBJ files loading the material file. (Author: MikeHart)
+- Add Mesh.CreatePyramid:Mesh(). (Author: MikeHart)
+- Mod test/test_picking script to include wedges and pyramids. (Author: MikeHart)
+
 
 V2.0
 - All constants changed to PascalCase.
