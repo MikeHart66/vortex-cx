@@ -13,11 +13,11 @@ Import vortex.src.math3d
 Import vortex.src.renderstate
 
 Class TestApp Extends App	
-	
+	Field _type:Int=0
 	Method OnCreate:Int()
 		'Setup
 		SetUpdateRate(0)
-		SetSwapInterval(0)
+		SetSwapInterval(1)
 		Seed = Millisecs()
 	
 		'Init vortex
@@ -39,12 +39,30 @@ Class TestApp Extends App
 		
 		'Create model
 		For Local i := 1 To 15
-			Local mModel := New Model(New Mesh(Mesh.CreateCube()))
-			mModel.Pickable(True)
-			mModel.Position(Rnd(-4,4), Rnd(-4,4), Rnd(4,20))
-			mModel.Rotate(Rnd(0,360),Rnd(0,360),Rnd(0,360))
-			mModel.Name("This is cube #"+i+"   ( "+mModel.X+" : "+mModel.Y+" : "+mModel.Z+" )")
-			mModel.Material.Color = Color.RGB(Rnd(0,255),Rnd(0,255),Rnd(0,255))
+			If _type = 0
+				Local mModel := New Model(New Mesh(Mesh.CreateCube()))
+				mModel.Pickable(True)
+				mModel.Position(Rnd(-4,4), Rnd(-4,4), Rnd(4,20))
+				mModel.Rotate(Rnd(0,360),Rnd(0,360),Rnd(0,360))
+				mModel.Name("This is cube #"+i+"   ( "+mModel.X+" : "+mModel.Y+" : "+mModel.Z+" )")
+				mModel.Material.Color = Color.RGB(Rnd(0,255),Rnd(0,255),Rnd(0,255))
+			Elseif _type = 1
+				Local mModel := New Model(New Mesh(Mesh.CreateWedge()))
+				mModel.Pickable(True)
+				mModel.Position(Rnd(-4,4), Rnd(-4,4), Rnd(4,20))
+				mModel.Rotate(Rnd(0,360),Rnd(0,360),Rnd(0,360))
+				mModel.Name("This is wedge #"+i+"   ( "+mModel.X+" : "+mModel.Y+" : "+mModel.Z+" )")
+				mModel.Material.Color = Color.RGB(Rnd(0,255),Rnd(0,255),Rnd(0,255))
+			Else
+				Local mModel := New Model(New Mesh(Mesh.CreatePyramid()))
+				mModel.Pickable(True)
+				mModel.Position(Rnd(-4,4), Rnd(-4,4), Rnd(4,20))
+				mModel.Rotate(Rnd(0,360),Rnd(0,360),Rnd(0,360))
+				mModel.Name("This is pyramid #"+i+"   ( "+mModel.X+" : "+mModel.Y+" : "+mModel.Z+" )")
+				mModel.Material.Color = Color.RGB(Rnd(0,255),Rnd(0,255),Rnd(0,255))
+			Endif
+			_type += 1
+			If _type = 3 Then _type = 0
 		Next
 		'Disable sun
 		World.SunColor($FFffffff)
